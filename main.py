@@ -64,10 +64,11 @@ if __name__ == '__main__':
                 continue
             if old_hash != new_hash:
                 websites[website] = new_hash
-                subject = f'Website {website} updated!'
-                body = f'The website {website} has been updated. Check it out now!'
+                subject = "Website {website} updated!"
+                body = "The website {website} has been updated. Check it out now!"
+                print("The website {"+website+"} has been updated.")
                 send_email(subject, body)
-                print(f'Website {website} updated!')
+                print("Website {website} updated!")
         time.sleep(60 * 30)
         # 休眠30分钟，避免过多请求导致被封禁或消耗资源过多
         print("sleep")
