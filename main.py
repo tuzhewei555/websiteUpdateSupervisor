@@ -5,14 +5,22 @@ import smtplib
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 
-# 定义需要监测的网站列表和对应的哈希值
-websites = {
-    'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=019BB709472B4921E36A549D1762AFED&lx=999': '',
-    'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=9DEC24DE35F9FE35713AFDF51D687EDB&lx=999': '',
-    'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=222ABB16C416C8B0C4F6A067C78FAB86&lx=999': '',
-    'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=7C99CEFDCDCE8BE5302046D3EA45EDC1&lx=999': '',
-    'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=C1BD4759CD07840CF9098A4D9E36D41C&lx=999': ''
+# 定义需要监测的使用Get请求的网站列表和对应的哈希值
+get_websites = {
+    # 'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=019BB709472B4921E36A549D1762AFED&lx=999': '',
+    # 'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=9DEC24DE35F9FE35713AFDF51D687EDB&lx=999': '',
+    # 'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=222ABB16C416C8B0C4F6A067C78FAB86&lx=999': '',
+    # 'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=7C99CEFDCDCE8BE5302046D3EA45EDC1&lx=999': '',
+    # 'https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=C1BD4759CD07840CF9098A4D9E36D41C&lx=999': ''
 }
+# 定义需要监测的使用Post请求的网站列表和对应的哈希值
+post_websites = [
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "019BB709472B4921E36A549D1762AFED"},"hash":""},
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "9DEC24DE35F9FE35713AFDF51D687EDB"},"hash":""},
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "222ABB16C416C8B0C4F6A067C78FAB86"},"hash":""},
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "7C99CEFDCDCE8BE5302046D3EA45EDC1"},"hash":""},
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "C1BD4759CD07840CF9098A4D9E36D41C"},"hash":""}
+]
 
 # 定义需要忽略的时间戳相关字段
 ignore_tags = ['script', 'style', 'time']
@@ -25,15 +33,41 @@ smtp_password = 'Tht961002'
 from_email = 'jerry.tan@cilslaw.com'
 to_email = 'haotian.tan@hotmail.com'
 
+def post_html(url,data):
+    header = {
+        "Accept": "text/html, */*; q=0.01",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Connection": "keep-alive",
+        "Content-Length": "40",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        # "Cookie": "JSESSIONID=0329D143588548A6F1FE15FDD7E2888C; wzws_sessionid=gWQ5YzU0NIJkMTBiY2WAMjAyLjEwMS4wLjKgZEXnqw==; pcxxw=5529501c709dbfb32f534d3d4a825990",
+        # "Host": "pccz.court.gov.cn",
+        # "Origin": "https://pccz.court.gov.cn",
+        # "Referer": "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=C1BD4759CD07840CF9098A4D9E36D41C&lx=999",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+        "X-Requested-With": "XMLHttpRequest",
+        "sec-ch-ua-mobile": "?0"
+    }
 
-def get_html_hash(url):
-    """计算网页内容的哈希值"""
-    response = requests.get(url)
+    response = requests.post(url=url,data=data,headers=header)
     soup = BeautifulSoup(response.content, 'html.parser')
+    # print(soup)
+    # print("*******************************************")
     for tag in ignore_tags:
         [x.extract() for x in soup.findAll(tag)]
-    return hashlib.sha256(soup.encode()).hexdigest()
+    return soup
 
+def get_html(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    # print(soup)
+    for tag in ignore_tags:
+        [x.extract() for x in soup.findAll(tag)]
+    return soup
 
 def send_email(subject, body):
     """发送邮件"""
@@ -49,12 +83,17 @@ def send_email(subject, body):
     smtp.quit()
 
 
+def onWebsiteUpdate(website):
+    subject = "Website {website} updated!"
+    body = "The website {website} has been updated. Check it out now!"
+    send_email(subject, body)
+
 if __name__ == '__main__':
     print("Game Starting")
     while True:
-        for website, old_hash in websites.items():
+        for websiteInfo, old_hash in get_websites.items():
             try:
-                new_hash = get_html_hash(website)
+                new_hash = hashlib.sha256(get_html(websiteInfo).encode()).hexdigest()
             except Exception as e:
                 print("Exception occurred")
                 print(str(e))
@@ -63,11 +102,23 @@ if __name__ == '__main__':
                 old_hash = new_hash
                 continue
             if old_hash != new_hash:
-                websites[website] = new_hash
-                subject = "Website {website} updated!"
-                body = "The website {website} has been updated. Check it out now!"
-                print("The website {"+website+"} has been updated.")
-                send_email(subject, body)
+                get_websites[websiteInfo] = new_hash
+                onWebsiteUpdate(websiteInfo)
+                print("Website {website} updated!")
+
+        for websiteInfo in post_websites:
+            try:
+                new_hash = hashlib.sha256(post_html(websiteInfo["url"], websiteInfo["data"]).encode()).hexdigest()
+            except Exception as e:
+                print("Exception occurred")
+                print(str(e))
+                continue
+            if websiteInfo["hash"] == "":
+                websiteInfo["hash"] = new_hash
+                continue
+            if websiteInfo["hash"] != new_hash:
+                websiteInfo["hash"] = new_hash
+                onWebsiteUpdate(websiteInfo)
                 print("Website {website} updated!")
         time.sleep(60 * 30)
         # 休眠30分钟，避免过多请求导致被封禁或消耗资源过多
