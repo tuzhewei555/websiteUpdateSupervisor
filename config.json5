@@ -1,49 +1,69 @@
 {
-  websites: [
-    {
-      method: "post",
-      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
-      data: {
-        lx: 0,
-        id: "019BB709472B4921E36A549D1762AFED",
-      },
-      description:"（2022）鲁1521破1号",
-    },
-    {
-      method: "post",
-      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
-      data: {
-        lx: 0,
-        id: "9DEC24DE35F9FE35713AFDF51D687EDB",
-      },
-      description:"（2022）鲁05破1号"
-    },
-    {
-      method: "post",
-      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
-      data: {
-        lx: 0,
-        id: "222ABB16C416C8B0C4F6A067C78FAB86",
-      },
-      description:"（2022）浙09破2号"
-    },
-    {
-      method: "post",
-      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
-      data: {
-        lx: 0,
-        id: "7C99CEFDCDCE8BE5302046D3EA45EDC1",
-      },
-      description:"（2021）鲁0602破2号"
-    },
-    {
-      method: "post",
-      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
-      data: {
-        lx: 0,
-        id: "C1BD4759CD07840CF9098A4D9E36D41C",
-      },
-      description:"（2020）湘10破1号"
-    }
-  ]
+    /*
+    定义需要监测的网站列表
+    method可以为get或post
+    当method为post时，data为请求时的json body；当method为get时，可以没有data项
+    description为自定义描述,必填项
+    */
+    websites: [
+        {
+            method: "post",
+            url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+            data: {
+                lx: 0,
+                id: "019BB709472B4921E36A549D1762AFED",
+            },
+            description: "（2022）鲁1521破1号 https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=019BB709472B4921E36A549D1762AFED&lx=999",
+        },
+        {
+            method: "post",
+            url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+            data: {
+                lx: 0,
+                id: "9DEC24DE35F9FE35713AFDF51D687EDB",
+            },
+            description: "（2022）鲁05破1号 https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=9DEC24DE35F9FE35713AFDF51D687EDB&lx=999"
+        },
+        {
+            method: "post",
+            url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+            data: {
+                lx: 0,
+                id: "222ABB16C416C8B0C4F6A067C78FAB86",
+            },
+            description: "（2022）浙09破2号 https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=222ABB16C416C8B0C4F6A067C78FAB86&lx=999"
+        },
+        {
+            method: "post",
+            url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+            data: {
+                lx: 0,
+                id: "7C99CEFDCDCE8BE5302046D3EA45EDC1",
+            },
+            description: "（2021）鲁0602破2号 https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=7C99CEFDCDCE8BE5302046D3EA45EDC1&lx=999"
+        },
+        {
+            method: "post",
+            url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+            data: {
+                lx: 0,
+                id: "C1BD4759CD07840CF9098A4D9E36D41C",
+            },
+            description: "（2020）湘10破1号 https://pccz.court.gov.cn/pcajxxw/gkaj/gkajxq?id=C1BD4759CD07840CF9098A4D9E36D41C&lx=999"
+        }
+    ],
+
+    //发送邮件功能配置
+    send_email_enabled: true,
+    smtp_server: "smtp.263.net",
+    smtp_port: 25,
+    smtp_username: "jerry.tan@cilslaw.com",
+    smtp_password: "Tht961002",
+    from_email: "jerry.tan@cilslaw.com",
+    to_email: "haotian.tan@hotmail.com",
+
+    //重新访问网站，检测是否更新的间隔时间（单位秒）
+    recalculate_interval_seconds: 1800,
+    //持久化网站哈希值的文件
+    persist_target_filename: "cache.json5",
 }
