@@ -1,0 +1,49 @@
+{
+  websites: [
+    {
+      method: "post",
+      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+      data: {
+        lx: 0,
+        id: "019BB709472B4921E36A549D1762AFED",
+      },
+      description:"（2022）鲁1521破1号",
+    },
+    {
+      method: "post",
+      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+      data: {
+        lx: 0,
+        id: "9DEC24DE35F9FE35713AFDF51D687EDB",
+      },
+      description:"（2022）鲁05破1号"
+    },
+    {
+      method: "post",
+      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+      data: {
+        lx: 0,
+        id: "222ABB16C416C8B0C4F6A067C78FAB86",
+      },
+      description:"（2022）浙09破2号"
+    },
+    {
+      method: "post",
+      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+      data: {
+        lx: 0,
+        id: "7C99CEFDCDCE8BE5302046D3EA45EDC1",
+      },
+      description:"（2021）鲁0602破2号"
+    },
+    {
+      method: "post",
+      url: "https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+      data: {
+        lx: 0,
+        id: "C1BD4759CD07840CF9098A4D9E36D41C",
+      },
+      description:"（2020）湘10破1号"
+    }
+  ]
+}

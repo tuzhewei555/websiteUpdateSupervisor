@@ -1,7 +1,9 @@
+import os
 import requests
 import hashlib
 import time
 import smtplib
+import json5
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 
@@ -15,7 +17,10 @@ get_websites = {
 }
 # 定义需要监测的使用Post请求的网站列表和对应的哈希值
 post_websites = [
-    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "019BB709472B4921E36A549D1762AFED"},"hash":""},
+    {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex",
+     "data":{"lx": 0, "id": "019BB709472B4921E36A549D1762AFED"},
+     "hash":""
+    },
     {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "9DEC24DE35F9FE35713AFDF51D687EDB"},"hash":""},
     {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "222ABB16C416C8B0C4F6A067C78FAB86"},"hash":""},
     {"url":"https://pccz.court.gov.cn/pcajxxw/gkaj/gkajindex","data":{"lx": 0, "id": "7C99CEFDCDCE8BE5302046D3EA45EDC1"},"hash":""},
@@ -90,6 +95,16 @@ def onWebsiteUpdate(website):
 
 if __name__ == '__main__':
     print("Game Starting")
+    path = os.path.join(os.path.dirname(__file__), 'config.json5')
+    with open(path,encoding="utf-8") as fp:
+        config = json5.load(fp)
+        # print(config)
+
+    test = json5.dumps(config, ensure_ascii=False, indent=4)
+    path = os.path.join(os.path.dirname(__file__), 'test.json5')
+    with open(path, 'w', encoding="utf-8") as fp:
+        fp.write(test)
+
     while True:
         for websiteInfo, old_hash in get_websites.items():
             try:
