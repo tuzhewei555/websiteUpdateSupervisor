@@ -58,7 +58,7 @@
     smtp_server: "smtp.263.net",
     smtp_port: 25,
     smtp_username: "jerry.tan@cilslaw.com",
-    smtp_password: "Tht961002",
+    smtp_password: "******",
     from_email: "jerry.tan@cilslaw.com",
     to_email: "haotian.tan@hotmail.com",
 
